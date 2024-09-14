@@ -27,15 +27,21 @@ export class CompanyService {
     return await this.companyModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} company`;
+  async findOne(id: string) {
+    return await this.companyModel.findById(id).exec();
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
+  async update(id: string, updateCompanyDto: UpdateCompanyDto) {
+    try {
+      return await this.companyModel.updateOne({ _id: id }, updateCompanyDto);
+    } catch (error: unknown) {
+      if ((error as Record<string, number>)?.code)
+        mongoErrorHandler(error as MongoError);
+      throw new Error(error as string);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} company`;
+  async remove(id: string) {
+    return await this.companyModel.deleteOne({ _id: id });
   }
 }
