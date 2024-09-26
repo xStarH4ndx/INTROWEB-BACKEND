@@ -12,7 +12,7 @@ export class CreateUserDto {
   email?: string;
 
   @IsNotEmpty()
-  password?: string;
+  password!: string;
 
   @IsOptional()
   phone?: number;

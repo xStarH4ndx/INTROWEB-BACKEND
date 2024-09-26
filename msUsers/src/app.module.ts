@@ -8,10 +8,13 @@ import { CompanyModule } from './http/company/company.module';
 import { MachineModule } from './http/machine/machine.module';
 import { AreaModule } from './http/area/area.module';
 import { UserMachineModule } from './http/user-machine/user-machine.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    MongooseModule.forRoot('mongodb+srv://asignatura:asignatura@cluster0.qxdoa.mongodb.net/back-ms-iam'),
+    
+    /*ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -19,8 +22,8 @@ import { UserMachineModule } from './http/user-machine/user-machine.module';
         uri: configService.get<string>('MONGODB_URI'),
         dbName: configService.get<string>('MONGODB_DATABASE'),
       }),
-    }),
-
+    })*/
+    
     UserModule,
 
     CompanyModule,
@@ -30,6 +33,8 @@ import { UserMachineModule } from './http/user-machine/user-machine.module';
     AreaModule,
 
     UserMachineModule,
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

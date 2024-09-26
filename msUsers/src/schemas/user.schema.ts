@@ -13,7 +13,7 @@ export class User extends Document {
   email?: string;
 
   @Prop({ type: String, required: true })
-  password?: string;
+  password!: string;
 
   @Prop({ type: Number })
   phone?: number;
