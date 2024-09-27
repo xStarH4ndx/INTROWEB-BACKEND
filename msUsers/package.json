@@ -34,10 +34,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.0",
     "ms-template": "file:",
-<<<<<<< HEAD
     "passport": "^0.7.0",
-=======
->>>>>>> 61b687484ae0200f273c784054427b2b3c1afa1d
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },

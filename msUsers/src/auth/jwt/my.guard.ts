@@ -27,7 +27,6 @@ export class MyGuard implements CanActivate {
       );
 
        request['user'] = payload;//Esto sirve para almacenar en la request una variable user con el payload'
-       console.log(request.user)
 
     } catch{
       throw new UnauthorizedException();

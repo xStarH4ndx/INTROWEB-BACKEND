@@ -38,8 +38,27 @@ export class AuthService {
     }
   }
 
-  profile(user:any) {
-    return user;
+  
+  profile(req: Request) {
+    const token = this.extractTokenFromHeader(req);
+    
+    if (token) {
+      try {
+        const payload = this.jwtService.verify(token); // Decodifica el token
+        return payload; // Retorna el payload decodificado
+      } catch (error) {
+        return { error: 'Token inválido' }; // Maneja el error si el token no es válido
+      }
+    } else {
+      return { error: 'Token no proporcionado' }; // Maneja el caso de que no se proporcione un token
+    }
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {//Observar porque puede estar malo
+    const authorizationHeader = (request.headers as any).authorization;
+  const [type, token] = authorizationHeader?.split(" ") ?? [];
+  return type === "Bearer" ? token : undefined;
+
   }
 
 }
