@@ -20,4 +20,10 @@ export class AuthController {
     //const user = request.headers['user'];
     return this.authService.profile(req);
 }
+
+  @Post('refresh')
+  refresh(@Body('refresh_token') refreshToken:string)//@Body solo accedera al valor de refresh_token
+  {
+    return this.authService.refresh(refreshToken);
+  }
 }

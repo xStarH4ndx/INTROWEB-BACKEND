@@ -12,7 +12,7 @@ import { jwtSecret} from './jwt/jwt.secret'
     JwtModule.register({
       global:true,
       secret: jwtSecret.secret, // Cambia esto a una variable de entorno en producción
-      signOptions: { expiresIn: '1d' }, // Configura el tiempo de expiración
+      signOptions: { expiresIn: '1d' }, // Configura el tiempo de expiración por defecto de los tokens
     }),UserModule],
   controllers: [AuthController],
   providers: [AuthService],

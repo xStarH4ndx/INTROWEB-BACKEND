@@ -3,6 +3,7 @@ import { LoginDto } from './dto/login.dto';
 import { UserService } from 'src/http/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -25,10 +26,14 @@ export class AuthService {
       //Generamos el contrato
       const payload = {id:user.id,email:user.email,name:user.name}
       //Generamos el token
-      const token = await this.jwtService.signAsync(payload);
+      const token = await this.jwtService.signAsync(payload,{expiresIn:'15m'});
+
+      //Falta retornarle tambien el Refresh_token
+      const refreshToken = await this.jwtService.signAsync(payload,{expiresIn:'7d'})
 
       return {
-        token,
+        access_token: token,
+        refresh_token: refreshToken,
         email:user.email,
         name:user.name,
       };
@@ -59,6 +64,29 @@ export class AuthService {
   const [type, token] = authorizationHeader?.split(" ") ?? [];
   return type === "Bearer" ? token : undefined;
 
+  }
+
+  async refresh(refreshToken:string)
+  {
+    const payload = await this.jwtService.verifyAsync(refreshToken).catch(()=>{
+      throw new UnauthorizedException("El refresh_token a expirado")
+    });
+    const newPayload = {id:payload.id,email:payload.email,name:payload.name}
+    console.log(payload);
+    
+    
+    const newAccessToken = await this.jwtService.signAsync(
+      newPayload,
+      {expiresIn:'15m'}
+    );
+    const newRefreshToken = await this.jwtService.signAsync(
+      newPayload,
+      {expiresIn:'7d'}
+    )
+    return {
+      access_token:newAccessToken,
+      refresh_token:newRefreshToken
+    }
   }
 
 }
