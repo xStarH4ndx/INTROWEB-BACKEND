@@ -21,9 +21,6 @@ export class User extends Document {
   @Prop({ type: String })
   address?: string;
 
-  @Prop({ type: String })
-  addressAdditional?: string;
-
   // Relación con Area (un usuario pertenece a un área)
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'area', required: true })
   area?: MongooseSchema.Types.ObjectId;
