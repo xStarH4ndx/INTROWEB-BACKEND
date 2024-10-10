@@ -40,4 +40,16 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
+
+  @Post('check')
+  checkToken(@Body('access_token')token:string)
+  {
+    return this.userService.checkToken(token);
+  }
+
+  @Post('refresh')
+  refresh(@Body('refresh_token')refreshToken:string)
+  {
+    return this.userService.refresh(refreshToken);
+  }
 }
