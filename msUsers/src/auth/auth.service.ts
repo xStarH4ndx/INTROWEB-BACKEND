@@ -72,7 +72,6 @@ export class AuthService {
       throw new UnauthorizedException("El refresh_token a expirado")
     });
     const newPayload = {id:payload.id,email:payload.email,name:payload.name}
-    console.log(payload);
     
     
     const newAccessToken = await this.jwtService.signAsync(
