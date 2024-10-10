@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @Schema()
 export class User extends Document {
@@ -23,6 +23,10 @@ export class User extends Document {
 
   @Prop({ type: String })
   addressAdditional?: string;
+
+  // Relación con Area (un usuario pertenece a un área)
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'area', required: true })
+  area?: MongooseSchema.Types.ObjectId;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
