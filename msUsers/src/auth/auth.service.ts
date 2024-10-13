@@ -4,6 +4,7 @@ import { UserService } from 'src/http/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { access } from 'fs';
+import { jwtSecret } from './jwt/jwt.secret';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +30,7 @@ export class AuthService {
       const token = await this.jwtService.signAsync(payload,{expiresIn:'15m'});
 
       //Falta retornarle tambien el Refresh_token
-      const refreshToken = await this.jwtService.signAsync(payload,{expiresIn:'7d'})
+      const refreshToken = await this.jwtService.signAsync(payload,{expiresIn:'7d',secret:jwtSecret.refreshSecret})
 
       return {
         access_token: token,
@@ -49,7 +50,7 @@ export class AuthService {
     
     if (token) {
       try {
-        const payload = this.jwtService.verify(token); // Decodifica el token
+        const payload = this.jwtService.verify(token,{secret:jwtSecret.accessSecret}); // Decodifica el token
         return payload; // Retorna el payload decodificado
       } catch (error) {
         return { error: 'Token inválido' }; // Maneja el error si el token no es válido
@@ -68,7 +69,9 @@ export class AuthService {
 
   async refresh(refreshToken:string)
   {
-    const payload = await this.jwtService.verifyAsync(refreshToken).catch(()=>{
+    const payload = await this.jwtService.verifyAsync(refreshToken,{
+      secret:jwtSecret.refreshSecret
+    }).catch(()=>{
       throw new UnauthorizedException("El refresh_token a expirado")
     });
     const newPayload = {id:payload.id,email:payload.email,name:payload.name}
@@ -80,7 +83,7 @@ export class AuthService {
     );
     const newRefreshToken = await this.jwtService.signAsync(
       newPayload,
-      {expiresIn:'7d'}
+      {expiresIn:'7d',secret:jwtSecret.refreshSecret}
     )
     return {
       access_token:newAccessToken,

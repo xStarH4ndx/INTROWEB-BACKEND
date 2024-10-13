@@ -21,6 +21,7 @@ export class AuthController {
     return this.authService.profile(req);
 }
 
+  //****************************************Es buena practica meter el token en el body?********************** */
   @Post('refresh')
   refresh(@Body('refresh_token') refreshToken:string)//@Body solo accedera al valor de refresh_token
   {

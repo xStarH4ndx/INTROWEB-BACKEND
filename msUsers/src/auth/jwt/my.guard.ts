@@ -22,7 +22,7 @@ export class MyGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(
         token,
         {
-          secret: jwtSecret.secret,
+          secret: jwtSecret.accessSecret,
         }
       );
 
