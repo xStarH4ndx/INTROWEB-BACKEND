@@ -11,7 +11,7 @@ import { jwtSecret} from './jwt/jwt.secret'
     PassportModule.register({ defaultStrategy: 'jwt' }), // Corrige el nombre aquí
     JwtModule.register({
       global:true,
-      secret: jwtSecret.secret, // Cambia esto a una variable de entorno en producción
+      secret: jwtSecret.accessSecret, // Cambia esto a una variable de entorno en producción
       signOptions: { expiresIn: '1d' }, // Configura el tiempo de expiración por defecto de los tokens
     }),UserModule],
   controllers: [AuthController],
